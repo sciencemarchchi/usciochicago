@@ -3294,12 +3294,19 @@
 
 				}
 
-		#header nav {
+		#header .navContainer {
 			height: inherit;
 			line-height: inherit;
 			position: absolute;
 			right: 0;
 			top: 0;
+			display: flex;
+			justify-content: flex-end;
+			align-items: center;
+		}
+
+		#header .lang-select {
+			height: 1.75em;
 		}
 
 			#header nav > ul {

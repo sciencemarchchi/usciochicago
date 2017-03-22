@@ -95,6 +95,10 @@
 
 			}
 
+			$('#lang-select').change(function() {
+				window.location = $(this).val();
+			});
+
 	});
 
 })(jQuery);
