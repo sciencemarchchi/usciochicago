@@ -95,9 +95,9 @@
 
 			}
 
-			$('#lang-select').val(window.location.href);
+			$('#lang-select').val($lang);
 			$('#lang-select').change(function() {
-				window.location = $(this).val();
+				window.location = $('option:selected').attr('data-url');
 			});
 
 	});
