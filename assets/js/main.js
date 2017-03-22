@@ -95,6 +95,7 @@
 
 			}
 
+			$('#lang-select').val(window.location.href);
 			$('#lang-select').change(function() {
 				window.location = $(this).val();
 			});
