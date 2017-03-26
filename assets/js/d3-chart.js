@@ -84,7 +84,6 @@ window.addEventListener('load', function() {
     $(this).scrollTop(0);
     menu.style.position = 'static';
     var absolutePosition = menu.getBoundingClientRect().top;
-    console.log(absolutePosition);
     // menu.style.position = 'absolute';
     // menu.style.top = absolutePosition + 'px';
 
@@ -93,20 +92,19 @@ window.addEventListener('load', function() {
             menu.style.position = 'relative';
             menu.style.top = '0px';
             menu.parentNode.removeChild(placeholder);
-            console.log('mobile');
+            
         } :
         function() {
             menu.style.position = 'static';
             menu.style.top = 0 + 'px';
             menu.parentNode.removeChild(placeholder);
-            console.log('desktop');
+            
         });
 
     window.addEventListener('scroll', function() {
         var yOffset = window.pageYOffset;
         // console.log(menu.style.position);
-        console.log(absolutePosition);
-        console.log(yOffset);
+        
         if (yOffset >= absolutePosition && menu.style.position !== 'fixed') {
             menu.style.position = 'fixed';
             menu.style.top = 0;
@@ -116,7 +114,7 @@ window.addEventListener('load', function() {
             // stickyMover();
             menu.style.position = 'static';
             menu.style.top = 0 + 'px';
-            console.log('blech');
+            
             menu.parentNode.removeChild(placeholder);
             topSplit();
         }
