@@ -1,5 +1,4 @@
 
-
 :root {
     --dark-blue: rgba(75, 130, 168, 1);
     --light-blue: rgba(105, 179, 231, 1);
@@ -101,9 +100,6 @@ section.graph header {
     z-index: 100;
 }
 
-.chart rect.goal {
-    fill: var(--pale-blue);
-}
 
 text {
     font-family: "Open Sans", Helvetica, sans-serif;
@@ -114,15 +110,6 @@ text {
     user-select: none;
 }
 
-.chart text.raised {
-    fill: black;
-    text-anchor: start;
-}
-
-.chart text.goal {
-    fill: black;
-    text-anchor: end;
-}
 /* ========= */
 section:nth-of-type(n+2) {
     font-size: 2em;
