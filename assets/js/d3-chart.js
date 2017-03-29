@@ -68,55 +68,7 @@ goal_rect = bar.append("rect")
  });
 
 
-<<<<<<< HEAD
-    var bar = chart.selectAll("g")
-    .data(data)
-    .enter()
-    .append("g");
-    bar.append("rect")
-    .attr("x", function(d) {return x(d[0])})
-    .attr("fill", "red")
-    .attr("width", 0)
-    .attr("height", barHeight - 1)
-    .attr("class", "goal")
-    .transition()
-    .duration(1000)
-    .delay(function(d,i){return 1000 * i})
-    .attr("width", function(d) {console.log(x(d[1]-d[0])); return x(d[1]-d[0])})
-    .attr("fill", function(d,i) {return "hsla(0" + (120 * 2 * i % 360) + ", 100%, 75%, 1)"})
 
-    bar
-    .append("text")
-    .attr("y", barHeight)
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .attr("x", function(d,i) {console.log(x(d[1]));return x(d[0] + (d[1]/2))})
-    .text(function(d,i) {return "$" + (d[1]-d[0]).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
-    // .attr("transform", function(d,i) {return "translate("+ 0 +","+ 0 +") rotate(5)"})
-    .transition()
-    .duration(1000)
-    .delay(function(d,i){return 1500 * i})
-    .style("opacity", 1);
-    bar
-    .append("text")
-    .attr("y", barHeight)
-    .attr("dy", "2em")
-    .style("text-anchor", "middle")
-    .attr("x", function(d,i) {console.log(x(d[1]));return x(d[0] + (d[1]/2))})
-    .text(function(d,i) {return d[2]})
-    // .attr("transform", function(d,i) {return "translate("+ (x(d[1] * -1)) +","+ barHeight +") rotate(90)"})
-    .transition()
-    .duration(1000)
-    .delay(function(d,i){return 1500 * i})
-    .style("opacity", 1);
-    d3.select(".goal").on("click", function() {
-        $('html, body').animate({
-            scrollTop: $(".why").offset().top
-        }, 1000);
-    });
-=======
-
->>>>>>> parent of ee91643... Added live donation feed to accountability page
 
 function type(d) {
     d.value = +d.value; // coerce to number
