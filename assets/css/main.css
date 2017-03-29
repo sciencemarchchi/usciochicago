@@ -2299,14 +2299,6 @@
 			font-size: 0.8em;
 		}
 
-		input[type="submit"].x-small,
-		input[type="reset"].x-small,
-		input[type="button"].x-small,
-		button.x-small,
-		.button.x-small {
-			font-size: 0.6em;
-		}
-
 		input[type="submit"].big,
 		input[type="reset"].big,
 		input[type="button"].big,
@@ -3313,39 +3305,8 @@
 			align-items: center;
 		}
 
-		#header #headerDonateBtn {
-			margin-top: 15px;
-			margin-right: 15px; 
-		}
-
-		#header #headerMerchBtn {
-			margin-top: 15px;
-			margin-right: 15px;
-		}
-
-		#header.alt #headerDonateBtn {
-			display: none; 
-		}
-
-		#header.alt #headerMerchBtn {
-			display: none;
-		}
-
 		#header .lang-select {
 			display: none;
-		}
-
-		#header h1.condensed {
-			display: none;
-		}
-	
-		@media screen and (max-width: 736px) {
-			#header h1.expanded {
-				display: none;
-			}
-			#header h1.condensed {
-				display: block;
-			}
 		}
 
 			#header nav > ul {
@@ -3412,7 +3373,7 @@
 
 		#header.alt {
 			background: transparent;
-		} 
+		}
 
 		#header.alt .lang-select {
 			display: block;
