@@ -31,7 +31,7 @@ var bustOutD3 = function(datas) {
     // var stacker = d3.stack();
     // var stackData = stacker(data);
     // console.log(stackData);
-    var data = [[0, datas["Merch total"], "merchandise"],
+    var data = [[0, datas["Merch total"], "merch"],
     [datas["Merch total"], datas["Merch total"] + datas["Donation total"], "donations"]];
     var goal = [85000];
     var view = document.querySelector(".graph > div > div").getBoundingClientRect();
@@ -99,7 +99,7 @@ var bustOutD3 = function(datas) {
     .attr("y", barHeight)
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .attr("x", function(d,i) {console.log(x(d[1]));return x(d[0] + (d[1]/2))})
+    .attr("x", function(d,i) {console.log(x((d[1]/2)+d[0]));return x((d[1]/2)+d[0]/2)})
     .text(function(d,i) {return "$" + (d[1]-d[0]).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
     // .attr("transform", function(d,i) {return "translate("+ 0 +","+ 0 +") rotate(5)"})
     .transition()
@@ -111,7 +111,7 @@ var bustOutD3 = function(datas) {
     .attr("y", barHeight)
     .attr("dy", "2em")
     .style("text-anchor", "middle")
-    .attr("x", function(d,i) {console.log(x(d[1]));return x(d[0] + (d[1]/2))})
+    .attr("x", function(d,i) {return x((d[1]/2)+d[0]/2)})
     .text(function(d,i) {return d[2]})
     // .attr("transform", function(d,i) {return "translate("+ (x(d[1] * -1)) +","+ barHeight +") rotate(90)"})
     .transition()
