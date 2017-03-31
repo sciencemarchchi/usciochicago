@@ -3866,3 +3866,30 @@
 	body.is-mobile.landing #footer {
 		background-color: #1d242a;
 	}
+
+	/* press room */
+
+	.profile img {
+		width: 200px;
+		height: auto;
+	}
+	
+	.logoimage {
+		width: 200px;
+		height: 200px;
+		border: 1px solid #cccccc;
+	}
+
+	.logoimage img {
+		position: relative;
+		top: 50%;
+		transform: translateY(-50%);
+		display: block;
+		margin: auto;
+		width: 175px;
+		height: 175px;
+	}
+
+	.logoimage.dark {
+		background-color: #AAA;
+	}
