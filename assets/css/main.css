@@ -3880,10 +3880,9 @@
 		border: 1px solid #cccccc;
 	}
 
-	.logoimage img {
+	.logoimage a img {
 		position: relative;
-		top: 50%;
-		transform: translateY(-50%);
+		top: 10px;
 		display: block;
 		margin: auto;
 		width: 175px;
@@ -3892,4 +3891,19 @@
 
 	.logoimage.dark {
 		background-color: #AAA;
+	}
+
+	.landscapeImgBox {
+		border: 1px solid #777;
+		padding: 12px;
+		text-align: center;
+	}
+
+	.landscapeImgBox a {
+		border: none;
+	}
+
+	.caption {
+		text-align: center;
+		font-size: 12pt;
 	}
