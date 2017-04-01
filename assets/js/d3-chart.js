@@ -1,4 +1,4 @@
-
+//fetch polyfill for safari
 (function(self) {
   'use strict';
 
@@ -472,18 +472,10 @@ fetch('https://sheets.googleapis.com/v4/spreadsheets/1pQ_25IvbXo1cNQ9fBGciPdbB4d
         return response.json().then(function(json) {
             console.log(json);
             var arrData = json.values;
-            //   var mappedJSON = json.values.map(function(d) {
             var object = {};
             json.values.forEach(function(d) {
                 object[d[0]] = Number(d[1].replace(/[^0-9.]/g, ""));
             });
-            //   object[d[0]] = d[1].replace(/[^0-9.]/g, "");
-            // object[arrData[0][0]] = arrData[0][1].replace(/[^0-9.]/g, "");
-            // object[arrData[0][0]] = arrData[0][1].replace(/[^0-9.]/g, "");
-            // object[]
-            //   return object;
-            //   });
-            //   console.log(mappedJSON);
             bustOutD3(object);
         });
     } else {
@@ -493,9 +485,6 @@ fetch('https://sheets.googleapis.com/v4/spreadsheets/1pQ_25IvbXo1cNQ9fBGciPdbB4d
 
 var bustOutD3 = function(datas) {
     console.log(datas);
-    // var stacker = d3.stack();
-    // var stackData = stacker(data);
-    // console.log(stackData);
     var data = [[0, datas["Merch total"], "merch"],
     [datas["Merch total"], datas["Merch total"] + datas["Donation total"], "donations"]];
     var goal = [85000];
@@ -565,7 +554,7 @@ var bustOutD3 = function(datas) {
     .attr("dy", "1em")
     .style("text-anchor", "middle")
     .attr("x", function(d,i) {console.log(x((d[1]/2)+d[0]));return x((d[1]/2)+d[0]/2)})
-    .text(function(d,i) {return "$" + (d[1]-d[0]).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
+    .text(function(d,i) {return "$" + (d[1]-d[0]).toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
     // .attr("transform", function(d,i) {return "translate("+ 0 +","+ 0 +") rotate(5)"})
     .transition()
     .duration(1000)
