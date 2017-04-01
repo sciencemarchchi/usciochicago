@@ -3907,3 +3907,29 @@
 		text-align: center;
 		font-size: 12pt;
 	}
+
+	.supporterIcon {
+		text-align: center;
+	}
+
+	.supporterIcon a {
+		border: none;
+	}
+
+	.supporterIcon.dark {
+		background-color: #999;
+	}
+
+	@media screen and (max-width: 480px) {
+		.supporterIcon img {
+			max-width: 150px;
+			height: auto;
+		}
+	}
+
+	@media screen and (min-width: 480px) and (max-width: 1680px) {
+		.supporterIcon img {
+			max-width: 175px;
+			height: auto;
+		}
+	}
