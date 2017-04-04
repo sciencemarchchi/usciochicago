@@ -3315,7 +3315,7 @@
 
 		#header #headerDonateBtn {
 			margin-top: 15px;
-			margin-right: 15px; 
+			margin-right: 15px;
 		}
 
 		#header #headerMerchBtn {
@@ -3324,7 +3324,7 @@
 		}
 
 		#header.alt #headerDonateBtn {
-			display: none; 
+			display: none;
 		}
 
 		#header.alt #headerMerchBtn {
@@ -3338,7 +3338,7 @@
 		#header h1.condensed {
 			display: none;
 		}
-	
+
 		@media screen and (max-width: 736px) {
 			#header h1.expanded {
 				display: none;
@@ -3412,7 +3412,7 @@
 
 		#header.alt {
 			background: transparent;
-		} 
+		}
 
 		#header.alt .lang-select {
 			display: block;
@@ -3532,15 +3532,16 @@
 			text-transform: uppercase;
 			width: 16em;
 			z-index: 1;
+			display: none;
 		}
 
 			#banner .more:after {
-				background-image: url("images/arrow.svg");
+				/*background-image: url("images/arrow.svg");*/
 				background-position: center;
 				background-repeat: no-repeat;
 				background-size: contain;
 				bottom: 4em;
-				content: '';
+				/*content: '';*/
 				display: block;
 				height: 1.5em;
 				left: 50%;
@@ -3873,7 +3874,7 @@
 		width: 200px;
 		height: auto;
 	}
-	
+
 	.logoimage {
 		width: 200px;
 		height: 200px;
