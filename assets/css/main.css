@@ -3934,6 +3934,28 @@
 		}
 	}
 
+	.shareKnowledgeIcon {
+		text-align: center;
+	}
+
+	.shareKnowledgeIcon a {
+		border: none;
+	}
+
+	@media screen and (max-width: 480px) {
+		.shareKnowledgeIcon img {
+			max-width: 175px;
+			height: auto;
+		}
+	}
+
+	@media screen and (min-width: 480px) and (max-width: 1680px) {
+		.shareKnowledgeIcon img {
+			max-width: 200px;
+			height: auto;
+		}
+	}
+
 	.event-img {
 		max-height: 200px;
 		width: auto;
