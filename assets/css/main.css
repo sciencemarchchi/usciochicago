@@ -3956,6 +3956,24 @@
 		}
 	}
 
+	.marchMap a {
+		border: none;
+	}
+
+	@media screen and (max-width: 480px) {
+		.marchMap img {
+			max-width: 200px;
+			height: auto;
+		}
+	}
+
+	@media screen and (min-width: 480px) and (max-width: 1680px) {
+		.marchMap img {
+			max-width: 300px;
+			height: auto;
+		}
+	}
+
 	.event-img {
 		max-height: 200px;
 		width: auto;
