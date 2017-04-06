@@ -3532,16 +3532,15 @@
 			text-transform: uppercase;
 			width: 16em;
 			z-index: 1;
-			display: none;
 		}
 
 			#banner .more:after {
-				/*background-image: url("images/arrow.svg");*/
+				background-image: url("images/arrow.svg");
 				background-position: center;
 				background-repeat: no-repeat;
 				background-size: contain;
 				bottom: 4em;
-				/*content: '';*/
+				content: '';
 				display: block;
 				height: 1.5em;
 				left: 50%;
@@ -4000,6 +3999,13 @@
 	.event-img {
 		max-height: 200px;
 		width: auto;
+	}
+
+	#clock {
+		font-weight: 800;
+		letter-spacing: 0.225em;
+		text-transform: uppercase;
+		font-size: 24px;
 	}
 
 	/* Card */
