@@ -65,7 +65,11 @@
 							<h2>Marsz Nauki Chicago</h2>
 							<p>STAŃ PO STRONIE NAUKI.<br /> </p>
 
-								<div class="image"><img src="../../images/mfslLogo_wht.png" alt="" /></div><br />
+								<div id="march-countdown">
+									<p>
+										<div id="clock"></div>
+									</p>
+								</div>
 							<ul class="actions">
 								<li><br /> <a href="donate.html" target="_blank" class="button special">Wesprzyj nas</a></li>
 								<li><br /> <a href="https://www.threadless.com/@ScienceMarchChi" target="_blank" class="button">TOWAR DLA SPRAWY</a></li>
@@ -223,6 +227,13 @@
 			<script src="../../assets/js/util.js"></script>
 			<!--[if lte IE 8]><script src="../../assets/js/ie/respond.min.js"></script><![endif]-->
 			<script src="../../assets/js/main.js?1000"></script>
+			<script src="../../assets/js/jquery.countdown.min.js"></script>
+
+			<script>
+				$('#clock').countdown('2017/04/22 10:00:00', function(event) {
+				  $(this).html(event.strftime('%D dni %H:%M:%S'));
+				});
+			</script>
 
 	</body>
 </html>
