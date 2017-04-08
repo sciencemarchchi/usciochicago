@@ -3980,9 +3980,18 @@
 		height: auto;
 	}
 
-	.event-img {
-		max-height: 200px;
-		width: auto;
+	@media screen and (min-width: 480px) and (max-width: 1680px) {
+		.event-img {
+			max-height: 300px;
+			width: auto;
+		}
+	}
+
+	@media screen and (max-width: 480px) {
+		.event-img {
+			max-height: 150px;
+			width: auto;
+		}
 	}
 
 	#clock {
@@ -4007,6 +4016,25 @@
 	  background-color: #fff;
 	  border: 1px solid rgba(0, 0, 0, 0.125);
 	  border-radius: 0.25rem;
+	}
+
+	.card-img {
+		text-align: center;
+	}
+
+	.card.expired {
+		background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.6));
+	}
+
+	.overlay {
+		background-image: url('images/MFS_Chi_logo_color.png');
+		background-position: center;
+		padding-left: 50px;
+		position: absolute;
+		top: 300px;
+		height: 200px;
+		width: auto;
+		z-index: 10;
 	}
 
 	.card-block {
