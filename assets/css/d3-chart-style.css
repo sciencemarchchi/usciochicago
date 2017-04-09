@@ -61,9 +61,9 @@ filter {
     filter: drop-shadow( 4px 4px 5px rgba(0, 0, 0, 1) );
 }
 
-.chart rect.raised {
+/*.chart rect.raised {
     fill: var(--light-blue);
-}
+}*/
 
 section.graph {
     height: auto;
