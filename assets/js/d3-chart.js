@@ -235,32 +235,32 @@ var makeChart = function(datas) {
 
             });
 
-            window.addEventListener('scroll', function() {
-                var yOffset = window.pageYOffset;
-                // console.log(menu.style.position);
-
-                if (yOffset >= absolutePosition && menu.style.position !== 'fixed') {
-                    menu.style.position = 'fixed';
-                    menu.style.top = 0;
-                    menu.parentNode.insertBefore(placeholder, menu);
-                    topHit();
-                } else if (yOffset < absolutePosition && menu.style.position == 'fixed') {
-                    // stickyMover();
-                    menu.style.position = 'static';
-                    menu.style.top = 0 + 'px';
-
-                    menu.parentNode.removeChild(placeholder);
-                    topSplit();
-                }
-            });
+            // window.addEventListener('scroll', function() {
+            //     var yOffset = window.pageYOffset;
+            //     // console.log(menu.style.position);
+            //
+            //     if (yOffset >= absolutePosition && menu.style.position !== 'fixed') {
+            //         menu.style.position = 'fixed';
+            //         menu.style.top = 0;
+            //         menu.parentNode.insertBefore(placeholder, menu);
+            //         topHit();
+            //     } else if (yOffset < absolutePosition && menu.style.position == 'fixed') {
+            //         // stickyMover();
+            //         menu.style.position = 'static';
+            //         menu.style.top = 0 + 'px';
+            //
+            //         menu.parentNode.removeChild(placeholder);
+            //         topSplit();
+            //     }
+            // });
         });
 
-        var topHit = function() {
-            d3.selectAll('text').transition().style("opacity", 0);
-        }
-        var topSplit = function() {
-            d3.selectAll('text').transition().style("opacity", 1);
-        }
+        // var topHit = function() {
+        //     d3.selectAll('text').transition().style("opacity", 0);
+        // }
+        // var topSplit = function() {
+        //     d3.selectAll('text').transition().style("opacity", 1);
+        // }
     }
 
 
