@@ -20,8 +20,9 @@ var makeChart = function(datas) {
     var data = [[0, datas["Merch total"], "merch"],
     [datas["Merch total"], datas["Merch total"] + datas["Donation total"], "donations"],
     [datas["Merch total"] + datas["Donation total"], datas["Merch total"] + datas["Donation total"] + datas["Event total"], "events"]];
-    var goalData = [["toilets", 10875],["fences", 10180],["additional costs", 5000],["security", 16500],["medical staff", 1320],["insurance", 18962],["tables, chairs, tents for expo", 5900],["waste/recycling", 900],["AV equip", 8909]];
-    var goal = [d3.sum(goalData,function(d){return d[1]})];
+    var goalData = [["toilets", 10875],["fences", 10180],["misc. costs", 12000],["security", 16500],["medical staff", 1320],["insurance", 18962],["tables/chairs/tents", 5900],["waste/recycling", 900],["av equip  ", 8909]];
+    // var goal = [d3.sum(goalData,function(d){return d[1]})];
+    var goal = [85000];
     var stackedGoal = goalData.map(function(item, i, arr){return [item[0],d3.sum(goalData.slice(0,i),function(d){return d[1]}),item[1]]});
     var view = document.querySelector(".graph > div > div").getBoundingClientRect();
     var width = view.width;
@@ -39,30 +40,32 @@ var makeChart = function(datas) {
     .attr("height", width/4);
 
     chart.append("rect")
-    .attr("y", barHeight)
+    .attr("y", 0)
+    .attr("height", 0)
     .attr("width", 0)
-    .attr("height", barHeight)
     .attr("class", "goal")
     .attr("width", width)
     .attr("fill", "rgba(208, 228, 242, 1)")
     .transition()
     .duration(1000)
     .delay(500)
-    .attr("y", 2*barHeight)
+    .attr("height", barHeight)
+    // .attr("y", 0)
     .on("end", function() {
         text = chart.append("text")
         .attr("x", width-5)
         .attr("text-anchor", "end")
-        .attr("y", 3*barHeight)
+        .attr("y", barHeight)
         .attr("dy", '1em')
         .attr("class", "goal-amount")
         .text("$" + goal.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ','))
         .transition()
-        .style("opacity", 1)
+        .style("opacity", 1);
+
         chart.append("text")
         .attr("x", width-5)
         .attr("text-anchor", "end")
-        .attr("y", 3*barHeight)
+        .attr("y", barHeight)
         .attr("dy", '2em')
         .text("goal")
         .transition()
@@ -81,7 +84,7 @@ var makeChart = function(datas) {
     .attr("x", function(d) {return x(d[0])})
     .attr("fill", "red")
     .attr("width", 0)
-    .attr("y", 2*barHeight)
+    .attr("y", 0)
     .attr("height", barHeight - 1)
     .transition()
     .duration(750)
@@ -98,7 +101,7 @@ var makeChart = function(datas) {
     .attr("x", x(data[2][1]/2))
     .attr("class", "raised-amount")
     .attr("text-anchor", "middle")
-    .attr("y", 3 * barHeight)
+    .attr("y", barHeight)
     .attr("dy", '1em')
     .transition()
     .delay(750 + data.length * 1000)
@@ -107,16 +110,18 @@ var makeChart = function(datas) {
     .text("$"+data[2][1].toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ','));
 
     chart.append("text")
+    .style("font-size", width/52+"px")
     .attr("x", x(data[2][1]/2))
     .attr("class", "raised-type")
     .attr("text-anchor", "middle")
-    .attr("y", 3 * barHeight)
+    .attr("y", barHeight)
     .attr("dy", '2em')
     .transition()
     .delay(750 + data.length * 1000)
     .duration(750)
     .style("opacity", 1)
-    .text("raised");
+    .text("raised")
+    .on("end", buildBudgetBar);
 
     function mouseInHandler(d, i) {
         console.log(d);
@@ -134,30 +139,6 @@ var makeChart = function(datas) {
 
     }
 
-    bar
-    .append("text")
-    .attr("y", barHeight)
-    .attr("dy", "1em")
-    .style("text-anchor", "middle")
-    .attr("x", function(d,i) {return x((d[1]/2)+d[0]/2)})
-    .text(function(d,i) {return "$" + (d[1]-d[0]).toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
-    .transition()
-    .duration(1000)
-    .delay(function(d,i){return 1000 * i})
-    .style("opacity", 0);
-
-    bar
-    .append("text")
-    .attr("y", barHeight)
-    .attr("dy", "2em")
-    .style("text-anchor", "middle")
-    .attr("x", function(d,i) {return x((d[1]/2)+d[0]/2)})
-    .text(function(d,i) {return d[2]})
-    .transition()
-    .duration(1000)
-    .delay(function(d,i){return 1000 * i})
-    .style("opacity", 0);
-
     d3.select(".goal").on("click", function() {
         $('html, body').animate({
             scrollTop: $(".why").offset().top
@@ -169,116 +150,118 @@ var makeChart = function(datas) {
         return d;
     }
 
-    var bar2 = chart.selectAll("g.goalbar")
-    .data(stackedGoal)
-    .enter()
-    .append("g")
-    .attr("class", "goalbar");
-    bar2.append("rect")
-    .attr("class", "budget")
-    .attr("dy", "3em")
-    .attr("fill", "red")
-    .attr("width", 0)
-    .attr("height", barHeight - 1)
-    .attr("transform", function(d){console.log(d); return "translate(" + x(d[1]) + "," + barHeight + ")"})
-    .transition()
-    .duration(500)
-    // .delay(function(d,i){return i * 500})
-    .attr("width", function(d) {return x(d[2])})
-    .attr("fill", function(d,i) {return "hsla(" + ((185 + (i*15)) % 360) + ", 100%, 75%, 1)"})
-    // .append("title", function(d){return d[0]})
-    d3.selectAll('.budget')
-    .on("mouseover", goalbarMouseIn)
-    .on("mouseout", goalbarMouseOut);
+    function buildBudgetBar() {
+        var bar2 = chart.selectAll("g.goalbar")
+        .data(stackedGoal)
+        .enter()
+        .append("g")
+        .attr("class", "goalbar");
 
-    function goalbarMouseIn(d, i) {
-        console.log(d);
-        console.log(i);
-        console.log(d3.select(this));
-        d3.select(this.parentNode)
-        .append("text")
-        .attr("y", 0)
-        .attr("dy", "1em")
-        .style("text-anchor", "middle")
-        .attr("x", function(d,i) {return x(d[1]+(d[2]/2))})
-        .text(function(d,i) {return "$" + (d[2]).toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
+        bar2.append("rect")
+        // .attr("y", barHeight)
+        .attr("class", "budget")
+        .attr("dy", "3em")
+        .attr("fill", "red")
+        .attr("height", 0)
+        .attr("width", function(d) {return x(d[2])})
+        .attr("transform", function(d){console.log(d); return "translate(" + x(d[1]) + "," + barHeight*2 + ")"})
         .transition()
-        .duration(200)
-        .style("opacity", 1);
+        .duration(500)
+        .attr("height", barHeight)
+        // .attr("width", function(d) {return x(d[2])})
+        .attr("fill", function(d,i) {return "hsla(" + ((185 + (i*15)) % 360) + ", 100%, 75%, 1)"})
+        d3.selectAll('.budget')
+        .on("mouseover", goalbarMouseIn)
+        .on("mouseout", goalbarMouseOut);}
 
-        d3.select(this.parentNode)
-        .append("text")
-        .attr("y", 0)
-        .attr("dy", "2em")
-        .style("text-anchor", "middle")
-        .attr("x", function(d,i) {return x(d[1]+(d[2]/2))})
-        .text(function(d,i) {return d[0]})
-        .transition()
-        .duration(200)
-        // .delay(function(d,i){return 1000 * i})
-        .style("opacity", 1);
-    }
-    function goalbarMouseOut(d, i) {
-        d3.select(this.parentNode).selectAll('text')
-        .transition()
-        .duration(200)
-        .style("opacity", 0)
-        .remove()
-    }
+        function goalbarMouseIn(d, i) {
+            console.log(d);
+            console.log(i);
+            console.log(d3.select(this));
+            d3.select(this.parentNode)
+            .append("text")
+            .attr("y", barHeight*3)
+            .attr("dy", "1em")
+            .style("text-anchor", "middle")
+            .attr("x", function(d,i) {return x(d[1]+(d[2]/2))})
+            .text(function(d,i) {return "$" + (d[2]).toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
+            .transition()
+            .duration(200)
+            .style("opacity", 1);
+
+            d3.select(this.parentNode)
+            .append("text")
+            .attr("y", barHeight*3)
+            .attr("dy", "2em")
+            .style("text-anchor", "middle")
+            .attr("x", function(d,i) {return x(d[1]+(d[2]/2))})
+            .text(function(d,i) {return d[0]})
+            .transition()
+            .duration(200)
+            // .delay(function(d,i){return 1000 * i})
+            .style("opacity", 1);
+        }
+        function goalbarMouseOut(d, i) {
+            d3.select(this.parentNode).selectAll('text')
+            .transition()
+            .duration(200)
+            .style("opacity", 0)
+            .remove()
+        }
 
 
-    window.addEventListener('load', function() {
-        var menu = document.querySelector('.graph div');
-        var menuPosition = menu.getBoundingClientRect();
-        var spaceToTop = menuPosition.top;
-        var placeholder = document.createElement('div');
-        placeholder.style.width = menuPosition.width + 'px';
-        placeholder.style.height = menuPosition.height + 'px';
-        $(this).scrollTop(0);
-        menu.style.position = 'static';
-        var absolutePosition = menu.getBoundingClientRect().top;
-
-        var stickyMover = (window.matchMedia("only screen and (max-device-width: 736px)").matches ?
-        function() {
-            menu.style.position = 'relative';
-            menu.style.top = '0px';
-            menu.parentNode.removeChild(placeholder);
-
-        } :
-        function() {
+        window.addEventListener('load', function() {
+            var menu = document.querySelector('.graph div');
+            var menuPosition = menu.getBoundingClientRect();
+            var spaceToTop = menuPosition.top;
+            var placeholder = document.createElement('div');
+            placeholder.style.width = menuPosition.width + 'px';
+            placeholder.style.height = menuPosition.height + 'px';
+            $(this).scrollTop(0);
             menu.style.position = 'static';
-            menu.style.top = 0 + 'px';
-            menu.parentNode.removeChild(placeholder);
+            var absolutePosition = menu.getBoundingClientRect().top;
 
-        });
+            var stickyMover = (window.matchMedia("only screen and (max-device-width: 736px)").matches ?
+            function() {
+                menu.style.position = 'relative';
+                menu.style.top = '0px';
+                menu.parentNode.removeChild(placeholder);
 
-        window.addEventListener('scroll', function() {
-            var yOffset = window.pageYOffset;
-            // console.log(menu.style.position);
-
-            if (yOffset >= absolutePosition && menu.style.position !== 'fixed') {
-                menu.style.position = 'fixed';
-                menu.style.top = 0;
-                menu.parentNode.insertBefore(placeholder, menu);
-                topHit();
-            } else if (yOffset < absolutePosition && menu.style.position == 'fixed') {
-                // stickyMover();
+            } :
+            function() {
                 menu.style.position = 'static';
                 menu.style.top = 0 + 'px';
-
                 menu.parentNode.removeChild(placeholder);
-                topSplit();
-            }
+
+            });
+
+            window.addEventListener('scroll', function() {
+                var yOffset = window.pageYOffset;
+                // console.log(menu.style.position);
+
+                if (yOffset >= absolutePosition && menu.style.position !== 'fixed') {
+                    menu.style.position = 'fixed';
+                    menu.style.top = 0;
+                    menu.parentNode.insertBefore(placeholder, menu);
+                    topHit();
+                } else if (yOffset < absolutePosition && menu.style.position == 'fixed') {
+                    // stickyMover();
+                    menu.style.position = 'static';
+                    menu.style.top = 0 + 'px';
+
+                    menu.parentNode.removeChild(placeholder);
+                    topSplit();
+                }
+            });
         });
-    });
 
-    var topHit = function() {
-        d3.selectAll('text').transition().style("opacity", 0);
+        var topHit = function() {
+            d3.selectAll('text').transition().style("opacity", 0);
+        }
+        var topSplit = function() {
+            d3.selectAll('text').transition().style("opacity", 1);
+        }
     }
-    var topSplit = function() {
-        d3.selectAll('text').transition().style("opacity", 1);
-    }
-}
 
 
-// March for Science Fundraising Accountability Page by Alexander Shoup
+    // March for Science Fundraising Accountability Page by Alexander Shoup
