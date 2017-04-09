@@ -1,6 +1,3 @@
-
-
-
 fetch('https://sheets.googleapis.com/v4/spreadsheets/1pQ_25IvbXo1cNQ9fBGciPdbB4dD6-lpozHvsqR8tzhc/values/A1%3AB3?majorDimension=ROWS&key=AIzaSyCS4kkuXOuY9sVI1Ik2_K11Fyj01inSbkQ')
 .then(function(response) {
     var contentType = response.headers.get("content-type");
@@ -12,47 +9,51 @@ fetch('https://sheets.googleapis.com/v4/spreadsheets/1pQ_25IvbXo1cNQ9fBGciPdbB4d
             json.values.forEach(function(d) {
                 object[d[0]] = Number(d[1].replace(/[^0-9.]/g, ""));
             });
-            bustOutD3(object);
+            makeChart(object);
         });
     } else {
         console.log("Oops, we haven't got JSON!");
     }
 });
 
-var bustOutD3 = function(datas) {
-    console.log(datas);
+var makeChart = function(datas) {
     var data = [[0, datas["Merch total"], "merch"],
-                [datas["Merch total"], datas["Merch total"] + datas["Donation total"], "donations"],
-                [datas["Merch total"] + datas["Donation total"], datas["Merch total"] + datas["Donation total"] + datas["Event total"], "events"]];
-    var goal = [85546];
+    [datas["Merch total"], datas["Merch total"] + datas["Donation total"], "donations"],
+    [datas["Merch total"] + datas["Donation total"], datas["Merch total"] + datas["Donation total"] + datas["Event total"], "events"]];
+    var goalData = [["toilets", 10875],["fences", 10180],["additional costs", 5000],["security", 16500],["medical staff", 1320],["insurance", 18962],["tables, chairs, tents for expo", 5900],["waste/recycling", 900],["AV equip", 8909]];
+    var goal = [d3.sum(goalData,function(d){return d[1]})];
+    var stackedGoal = goalData.map(function(item, i, arr){return [item[0],d3.sum(goalData.slice(0,i),function(d){return d[1]}),item[1]]});
     var view = document.querySelector(".graph > div > div").getBoundingClientRect();
     var width = view.width;
     var barHeight = width / 20;
 
-    var x = d3.scale.linear()
+    var x = d3.scaleLinear()
     .range([0, width])
     .domain([0, goal]);
 
-    var goal_x = d3.scale.linear()
+    var goal_x = d3.scaleLinear()
     .range([0, goal]);
 
     var chart = d3.select(".chart")
     .attr("width", width)
-    .attr("height", width/8);
+    .attr("height", width/4);
 
     chart.append("rect")
+    .attr("y", barHeight)
     .attr("width", 0)
-    .attr("height", barHeight - 1)
+    .attr("height", barHeight)
     .attr("class", "goal")
+    .attr("width", width)
     .attr("fill", "rgba(208, 228, 242, 1)")
     .transition()
     .duration(1000)
-    .attr("width", width)
-    .each("end", function() {
+    .delay(500)
+    .attr("y", 2*barHeight)
+    .on("end", function() {
         text = chart.append("text")
         .attr("x", width-5)
         .attr("text-anchor", "end")
-        .attr("y", barHeight)
+        .attr("y", 3*barHeight)
         .attr("dy", '1em')
         .attr("class", "goal-amount")
         .text("$" + goal.toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ','))
@@ -61,59 +62,73 @@ var bustOutD3 = function(datas) {
         chart.append("text")
         .attr("x", width-5)
         .attr("text-anchor", "end")
-        .attr("y", barHeight)
+        .attr("y", 3*barHeight)
         .attr("dy", '2em')
         .text("goal")
         .transition()
         .style("opacity", 1)
     });
-    chart.append("text")
-    .attr("x", x(data[2][1]/2))
-    .attr("class", "raised-amount")
-    .attr("text-anchor", "middle")
-    .attr("y", barHeight)
-    .attr("dy", '1em')
-    .style("opacity", 1)
-    .text("$"+data[2][1].toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ','));
-    chart.append("text")
-    .attr("x", x(data[2][1]/2))
-    .attr("class", "raised-type")
-    .attr("text-anchor", "middle")
-    .attr("y", barHeight)
-    .attr("dy", '2em')
-    .style("opacity", 1)
-    .text("raised");
 
     var bar = chart.selectAll("g")
     .data(data)
     .enter()
     .append("g");
+
     bar.append("rect")
+    .transition()
+    .delay(1500)
     .attr("class", "raised")
     .attr("x", function(d) {return x(d[0])})
     .attr("fill", "red")
     .attr("width", 0)
+    .attr("y", 2*barHeight)
     .attr("height", barHeight - 1)
     .transition()
-    .duration(1000)
+    .duration(750)
     .delay(function(d,i){return 1000 * i})
-    .attr("width", function(d) {console.log(x(d[1]-d[0])); return x(d[1]-d[0])})
-    .attr("fill", function(d,i) {return "hsla(" + ((240 * i) % 360) + ", 100%, 75%, 1)"});
-    d3.selectAll(".raised")
-    .on("mouseover", mouseInHandler)
-    .on("mouseout", mouseOutHandler);
+    .attr("width", function(d) {return x(d[1]-d[0])})
+    .attr("fill", function(d,i) {return "hsla(" + ((240 + (70 * i)) % 360) + ", 100%, 65%, 1)"})
+    .on("end", function(){
+        d3.selectAll(".raised")
+        .on("mouseover", mouseInHandler)
+        .on("mouseout", mouseOutHandler);
+    });
+
+    chart.append("text")
+    .attr("x", x(data[2][1]/2))
+    .attr("class", "raised-amount")
+    .attr("text-anchor", "middle")
+    .attr("y", 3 * barHeight)
+    .attr("dy", '1em')
+    .transition()
+    .delay(750 + data.length * 1000)
+    .duration(750)
+    .style("opacity", 1)
+    .text("$"+data[2][1].toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ','));
+
+    chart.append("text")
+    .attr("x", x(data[2][1]/2))
+    .attr("class", "raised-type")
+    .attr("text-anchor", "middle")
+    .attr("y", 3 * barHeight)
+    .attr("dy", '2em')
+    .transition()
+    .delay(750 + data.length * 1000)
+    .duration(750)
+    .style("opacity", 1)
+    .text("raised");
 
     function mouseInHandler(d, i) {
         console.log(d);
         console.log(i);
         console.log(this);
-        d3.select(this).attr("fill", "hsla(" + ((240 * i) % 360) + ", 100%, 65%, 1)");
+        d3.select(this).attr("fill", "hsla(" + ((240 + (70 * i)) % 360) + ", 100%, 80%, 1)");
         d3.select('.raised-amount').text("$"+(d[1]-d[0]).toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ','));
         d3.select('.raised-type').text(d[2]);
 
     }
     function mouseOutHandler(d, i) {
-        d3.select(this).attr("fill", "hsla(" + ((240 * i) % 360) + ", 100%, 75%, 1)");
+        d3.select(this).attr("fill", "hsla(" + ((240 + (70 * i)) % 360) + ", 100%, 65%, 1)");
         d3.select('.raised-amount').text("$"+data[2][1].toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ','));
         d3.select('.raised-type').text("raised");
 
@@ -124,13 +139,13 @@ var bustOutD3 = function(datas) {
     .attr("y", barHeight)
     .attr("dy", "1em")
     .style("text-anchor", "middle")
-    .attr("x", function(d,i) {console.log(x((d[1]/2)+d[0]));return x((d[1]/2)+d[0]/2)})
+    .attr("x", function(d,i) {return x((d[1]/2)+d[0]/2)})
     .text(function(d,i) {return "$" + (d[1]-d[0]).toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
-    // .attr("transform", function(d,i) {return "translate("+ 0 +","+ 0 +") rotate(5)"})
     .transition()
     .duration(1000)
-    .delay(function(d,i){return 1500 * i})
+    .delay(function(d,i){return 1000 * i})
     .style("opacity", 0);
+
     bar
     .append("text")
     .attr("y", barHeight)
@@ -138,11 +153,11 @@ var bustOutD3 = function(datas) {
     .style("text-anchor", "middle")
     .attr("x", function(d,i) {return x((d[1]/2)+d[0]/2)})
     .text(function(d,i) {return d[2]})
-    // .attr("transform", function(d,i) {return "translate("+ (x(d[1] * -1)) +","+ barHeight +") rotate(90)"})
     .transition()
     .duration(1000)
-    .delay(function(d,i){return 1500 * i})
+    .delay(function(d,i){return 1000 * i})
     .style("opacity", 0);
+
     d3.select(".goal").on("click", function() {
         $('html, body').animate({
             scrollTop: $(".why").offset().top
@@ -150,9 +165,68 @@ var bustOutD3 = function(datas) {
     });
 
     function type(d) {
-        d.value = +d.value; // coerce to number
+        d.value = +d.value;
         return d;
     }
+
+    var bar2 = chart.selectAll("g.goalbar")
+    .data(stackedGoal)
+    .enter()
+    .append("g")
+    .attr("class", "goalbar");
+    bar2.append("rect")
+    .attr("class", "budget")
+    .attr("dy", "3em")
+    .attr("fill", "red")
+    .attr("width", 0)
+    .attr("height", barHeight - 1)
+    .attr("transform", function(d){console.log(d); return "translate(" + x(d[1]) + "," + barHeight + ")"})
+    .transition()
+    .duration(500)
+    // .delay(function(d,i){return i * 500})
+    .attr("width", function(d) {return x(d[2])})
+    .attr("fill", function(d,i) {return "hsla(" + ((185 + (i*15)) % 360) + ", 100%, 75%, 1)"})
+    // .append("title", function(d){return d[0]})
+    d3.selectAll('.budget')
+    .on("mouseover", goalbarMouseIn)
+    .on("mouseout", goalbarMouseOut);
+
+    function goalbarMouseIn(d, i) {
+        console.log(d);
+        console.log(i);
+        console.log(d3.select(this));
+        d3.select(this.parentNode)
+        .append("text")
+        .attr("y", 0)
+        .attr("dy", "1em")
+        .style("text-anchor", "middle")
+        .attr("x", function(d,i) {return x(d[1]+(d[2]/2))})
+        .text(function(d,i) {return "$" + (d[2]).toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
+        .transition()
+        .duration(200)
+        .style("opacity", 1);
+
+        d3.select(this.parentNode)
+        .append("text")
+        .attr("y", 0)
+        .attr("dy", "2em")
+        .style("text-anchor", "middle")
+        .attr("x", function(d,i) {return x(d[1]+(d[2]/2))})
+        .text(function(d,i) {return d[0]})
+        .transition()
+        .duration(200)
+        // .delay(function(d,i){return 1000 * i})
+        .style("opacity", 1);
+    }
+    function goalbarMouseOut(d, i) {
+        d3.select(this.parentNode).selectAll('text')
+        .transition()
+        .duration(200)
+        .style("opacity", 0)
+        .remove()
+    }
+
+
     window.addEventListener('load', function() {
         var menu = document.querySelector('.graph div');
         var menuPosition = menu.getBoundingClientRect();
@@ -205,3 +279,6 @@ var bustOutD3 = function(datas) {
         d3.selectAll('text').transition().style("opacity", 1);
     }
 }
+
+
+// March for Science Fundraising Accountability Page by Alexander Shoup
