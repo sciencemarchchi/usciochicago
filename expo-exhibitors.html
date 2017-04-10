@@ -134,8 +134,38 @@ Free for personal and commercial use under the CCA 3.0 license (html5up.net/lice
 						3. Expo: <em><b>April 22, 2017</b></em>
 						<br /><br /><br />
 						<section id="fees">
-							<h3>Fee Information</h3>
-							The fee will largely be used to cover the per-participant cost of the Expo including the table, chairs, amenities, and student participation at the Expo.
+							<h3>Cost Breakdown</h3>
+							<div id="chart_div"></div>
+							<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+							<script type="text/javascript">
+							google.charts.load('current', {'packages':['bar']});
+							google.charts.setOnLoadCallback(drawChart);
+							function drawChart() {
+								var data = google.visualization.arrayToDataTable([
+									['', 'Security', 'Medical', 'Chairs, Tents, Tables'],
+									[' ', 16500, 1320, 5900]
+								]);
+								var options = {
+									chart: {
+										title: 'Expo Cost Breakdown'
+									},
+									isStacked: true,
+									bars: 'horizontal',
+									hAxis: {format: 'currency'},
+									height: 200,
+									colors: ['#1b9e77', '#d95f02', '#7570b3']
+								};
+								var chart = new google.charts.Bar(document.getElementById('chart_div'));
+								chart.draw(data, google.charts.Bar.convertOptions(options));
+							}
+							</script>
+							<br/>
+							<div id="btn-group">
+							</div>
+							<p>Costs are broken down into two parts: <ol>
+								<li>application down payment (due when you submit your proposal) and </li>
+								<li>exhibitor cost (due two days after your proposal’s approval)</li>
+							</ol> Please note that the costs are non-refundable and are not tax-deductible. </p>
 							<br /><br />
 							The fee consists of two parts: application (due when you submit your proposal) and exhibitor (due two days after your proposal’s approval). Please note that the fees are non-refundable and are not tax-deductible.
 							<br /><br /><br />
