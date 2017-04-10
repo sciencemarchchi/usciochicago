@@ -4343,3 +4343,12 @@
 	    margin-bottom: 0.75rem;
 	  }
 	}
+
+/* Paypal form picker expo-exhibitors.html*/
+.paypal-form-picker ul {
+	text-align: center;
+	list-style: none;
+}
+.paypal-form-picker ul li {
+	display: inline;
+}
