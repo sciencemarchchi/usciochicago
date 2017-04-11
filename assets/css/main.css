@@ -4352,3 +4352,7 @@
 .paypal-form-picker ul li {
 	display: inline;
 }
+
+a.no-underline {
+	border: none;
+}
