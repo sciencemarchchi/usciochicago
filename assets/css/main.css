@@ -3874,6 +3874,14 @@
 		height: auto;
 	}
 
+	@media screen and (max-width: 480px) {
+		.profile img {
+			width: 100px;
+			height: auto;
+		}
+	}
+
+
 	.logoimage {
 		width: 200px;
 		height: 200px;
