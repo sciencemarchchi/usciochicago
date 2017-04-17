@@ -4369,7 +4369,7 @@ a.no-underline {
 	margin-top: 10px;
 }
 
-.accordion-button h6 {
+.accordion-button h5 {
 	overflow: hidden;
 	white-space: nowrap;
 	text-overflow: ellipsis;
@@ -4378,6 +4378,7 @@ a.no-underline {
 .expanded-accordion-card {
 	margin-top: 15px;
 	border: 1px solid #CCC;
+	line-height: 1.25em;
 }
 
 .expanded-accordion-card li {
