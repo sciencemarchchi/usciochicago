@@ -4364,3 +4364,27 @@
 a.no-underline {
 	border: none;
 }
+
+.accordion-button {
+	margin-top: 10px;
+}
+
+.accordion-button h6 {
+	overflow: hidden;
+	white-space: nowrap;
+	text-overflow: ellipsis;
+}
+
+.expanded-accordion-card {
+	margin-top: 15px;
+	border: 1px solid #CCC;
+}
+
+.expanded-accordion-card li {
+	margin-top: 10px;
+}
+
+.accordion-button {
+	width: 100%;
+	text-align: left;
+}
