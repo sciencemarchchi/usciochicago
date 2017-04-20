@@ -29,22 +29,23 @@ var makeChart = function(datas) {
     var barHeight = width / 20;
 
     var x = d3.scaleLinear()
-    .range([0, width])
+    .range([0, width-60])
     .domain([0, goal]);
 
     var goal_x = d3.scaleLinear()
-    .range([0, goal]);
+    .range([15, goal]);
 
     var chart = d3.select(".chart")
-    .attr("width", width)
-    .attr("height", width/4);
+    .attr("width", width+60)
+    .attr("height", width/3);
 
     chart.append("rect")
+    .attr("x", 15)
     .attr("y", 0)
     .attr("height", 0)
     .attr("width", 0)
     .attr("class", "goal")
-    .attr("width", width)
+    .attr("width", width-60)
     .attr("fill", "rgba(208, 228, 242, 1)")
     .transition()
     .duration(1000)
@@ -53,7 +54,8 @@ var makeChart = function(datas) {
     // .attr("y", 0)
     .on("end", function() {
         text = chart.append("text")
-        .attr("x", width-5)
+        .style("opacity", 0)
+        .attr("x", width-45)
         .attr("text-anchor", "end")
         .attr("y", barHeight)
         .attr("dy", '1em')
@@ -63,7 +65,8 @@ var makeChart = function(datas) {
         .style("opacity", 1);
 
         chart.append("text")
-        .attr("x", width-5)
+        .style("opacity", 0)
+        .attr("x", width-45)
         .attr("text-anchor", "end")
         .attr("y", barHeight)
         .attr("dy", '2em')
@@ -81,14 +84,14 @@ var makeChart = function(datas) {
     .transition()
     .delay(1500)
     .attr("class", "raised")
-    .attr("x", function(d) {return x(d[0])})
+    .attr("x", function(d) {return x(d[0])+15})
     .attr("fill", "red")
     .attr("width", 0)
     .attr("y", 0)
-    .attr("height", barHeight - 1)
+    .attr("height", barHeight)
     .transition()
     .duration(750)
-    .delay(function(d,i){return 1000 * i})
+    .delay(function(d,i){return 750 * i+1})
     .attr("width", function(d) {return x(d[1]-d[0])})
     .attr("fill", function(d,i) {return "hsla(" + ((240 + (70 * i)) % 360) + ", 100%, 65%, 1)"})
     .on("end", function(){
@@ -98,7 +101,8 @@ var makeChart = function(datas) {
     });
 
     chart.append("text")
-    .attr("x", x(data[2][1]/2))
+    .style("opacity", 0)
+    .attr("x", x(data[2][1]/2)+15)
     .attr("class", "raised-amount")
     .attr("text-anchor", "middle")
     .attr("y", barHeight)
@@ -110,8 +114,9 @@ var makeChart = function(datas) {
     .text("$"+data[2][1].toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ','));
 
     chart.append("text")
-    .style("font-size", width/52+"px")
-    .attr("x", x(data[2][1]/2))
+    .style("opacity", 0)
+    // .style("font-size", width/52+"px")
+    .attr("x", x(data[2][1]/2)+15)
     .attr("class", "raised-type")
     .attr("text-anchor", "middle")
     .attr("y", barHeight)
@@ -124,8 +129,8 @@ var makeChart = function(datas) {
     .on("end", buildBudgetBar);
 
     function mouseInHandler(d, i) {
-        console.log(d);
-        console.log(i);
+        // console.log(d);
+        // console.log(i);
         console.log(this);
         d3.select(this).attr("fill", "hsla(" + ((240 + (70 * i)) % 360) + ", 100%, 80%, 1)");
         d3.select('.raised-amount').text("$"+(d[1]-d[0]).toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ','));
@@ -140,9 +145,9 @@ var makeChart = function(datas) {
     }
 
     d3.select(".goal").on("click", function() {
-        $('html, body').animate({
-            scrollTop: $(".why").offset().top
-        }, 1000);
+        // $('html, body').animate({
+        //     scrollTop: $(".why").offset().top
+        // }, 1000);
     });
 
     function type(d) {
@@ -159,12 +164,13 @@ var makeChart = function(datas) {
 
         bar2.append("rect")
         // .attr("y", barHeight)
+        .attr("x", 15)
         .attr("class", "budget")
         .attr("dy", "3em")
         .attr("fill", "red")
         .attr("height", 0)
         .attr("width", function(d) {return x(d[2])})
-        .attr("transform", function(d){console.log(d); return "translate(" + x(d[1]) + "," + barHeight*2 + ")"})
+        .attr("transform", function(d){console.log(d); return "translate(" + x(d[1]) + "," + barHeight*3 + ")"})
         .transition()
         .duration(500)
         .attr("height", barHeight)
@@ -175,26 +181,28 @@ var makeChart = function(datas) {
         .on("mouseout", goalbarMouseOut);}
 
         function goalbarMouseIn(d, i) {
-            console.log(d);
-            console.log(i);
-            console.log(d3.select(this));
+            // console.log(d);
+            // console.log(i);
+            // console.log(d3.select(this));
             d3.select(this.parentNode)
             .append("text")
-            .attr("y", barHeight*3)
+            .style("opacity", 0)
+            .attr("y", barHeight*4)
             .attr("dy", "1em")
             .style("text-anchor", "middle")
-            .attr("x", function(d,i) {return x(d[1]+(d[2]/2))})
-            .text(function(d,i) {return "$" + (d[2]).toFixed(2).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
+            .attr("x", function(d,i) {return x(d[1]+(d[2]/2))+15})
+            .text(function(d,i) {return "$" + (d[2]).toFixed(0).toString().replace(/\B(?=(?:\d{3})+(?!\d))/g, ',')})
             .transition()
             .duration(200)
             .style("opacity", 1);
 
             d3.select(this.parentNode)
             .append("text")
-            .attr("y", barHeight*3)
+            .style("opacity", 0)
+            .attr("y", barHeight*4)
             .attr("dy", "2em")
             .style("text-anchor", "middle")
-            .attr("x", function(d,i) {return x(d[1]+(d[2]/2))})
+            .attr("x", function(d,i) {return x(d[1]+(d[2]/2))+15})
             .text(function(d,i) {return d[0]})
             .transition()
             .duration(200)
@@ -217,7 +225,7 @@ var makeChart = function(datas) {
             var placeholder = document.createElement('div');
             placeholder.style.width = menuPosition.width + 'px';
             placeholder.style.height = menuPosition.height + 'px';
-            $(this).scrollTop(0);
+            // $(this).scrollTop(0);
             menu.style.position = 'static';
             var absolutePosition = menu.getBoundingClientRect().top;
 
