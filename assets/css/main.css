@@ -3944,7 +3944,7 @@
 
 	@media screen and (min-width: 1680px) {
 		.supporterIcon img {
-			max-width: 375px;
+			max-width: 200px;
 			height: auto;
 		}
 	}
