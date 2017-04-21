@@ -3930,7 +3930,7 @@
 
 	@media screen and (max-width: 480px) {
 		.supporterIcon img {
-			max-width: 150px;
+			max-width: 125px;
 			height: auto;
 		}
 	}
